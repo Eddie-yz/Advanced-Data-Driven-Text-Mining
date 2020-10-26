@@ -130,3 +130,6 @@ def main():
     model = train(train_loader, val_loader, device)
     test(model, test_loader, ind2label, device)
 
+if __name__ == '__main__':
+    main()
+
