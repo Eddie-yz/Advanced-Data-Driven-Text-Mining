@@ -170,14 +170,14 @@ def main():
     X_test_emb = tokenizer(X_test, max_length=400, truncation=True, padding='max_length')
 
     train_dataset = TextDataset(X_train_emb, train_labels)
-    train_loader = DataLoader(train_dataset, batch_size=16, shuffle=True)
+    train_loader = DataLoader(train_dataset, batch_size=8, shuffle=True)
     val_dataset = TextDataset(X_val_emb, val_labels)
     val_loader = DataLoader(val_dataset, batch_size=1, shuffle=False)
     test_dataset = TextDataset(X_test_emb, np.zeros(len(X_test_emb['input_ids'])))
     test_loader = DataLoader(test_dataset, batch_size=1, shuffle=False)
 
     device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
-    model = train(train_loader, val_loader, device)
+    model = train_with_center_loss(train_loader, val_loader, device)
     test(model, test_loader, ind2label, device)
 
 if __name__ == '__main__':
