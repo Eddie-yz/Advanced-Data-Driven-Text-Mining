@@ -6,7 +6,7 @@ import torch.nn as nn
 import torch.optim as optim
 import pandas as pd
 from core.model_utils import CenterLoss
-from train_utils import cal_macro_f1
+from core.train_utils import cal_macro_f1
 from sklearn.metrics import confusion_matrix
 
 
@@ -146,8 +146,8 @@ class ReviewClassifier(object):
         val_acc, val_f1 = self.validation(val_loader)
         if val_f1 > best_f1:
             self.model.eval()
-            torch.save(self.model.state_dict(), os.path.join(self.model_path, 'kw_best_lstm_att'))
-            torch.save(self.CentLoss.state_dict(), os.path.join(self.model_path, 'kw_best_center_att'))
+            torch.save(self.model.state_dict(), os.path.join(self.model_path, 'kw_best_lstm'))
+            torch.save(self.CentLoss.state_dict(), os.path.join(self.model_path, 'kw_best_center'))
             print ('Best epoch so far: {}'.format(epoch))
             best_f1 = val_f1
         print ('For epoch {}: val acc {} | val f1 {}'.format(epoch, val_acc, val_f1))
@@ -202,11 +202,7 @@ class ReviewClassifier(object):
             print ('start evaluating...')
             best_f1 = self.evaluate(val_loader, epoch, best_f1)
     
-    def test(self, test_loader, use_best=True):
-        if use_best:
-            model_path = os.path.join(self.model_path, 'kw_best_lstm')
-            self.model.load_state_dict(torch.load(model_path))
-            self.model.to(self.device)
+    def test(self, test_loader):
         self.model.eval()
         y_pre = list()
         for X, _ in test_loader:
