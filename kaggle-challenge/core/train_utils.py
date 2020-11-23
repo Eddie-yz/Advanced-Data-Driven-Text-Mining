@@ -37,7 +37,9 @@ def validation(model, val_loader, device):
     print (confusion_matrix(y_gt, y_pre))
     return np.sum(np.array(y_pre) == np.array(y_gt))/len(y_pre), cal_macro_f1(y_pre, y_gt)
 
-def test(model, test_loader, ind2label, device, output_name='predicted-review.csv'):
+def test_bert(bert_model_name, test_loader, ind2label, device, output_name='predicted-review.csv'):
+    model = BertForSequenceClassification.from_pretrained(bert_model_name, num_labels=10)
+    model.to(device)
     y_pre = list()
     for batch in test_loader:
         input_ids = batch['input_ids'].to(device)
