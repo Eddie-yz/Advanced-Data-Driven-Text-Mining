@@ -1,1 +1,1 @@
-# CSE291A-Advanced-Data-Driven-Text-Mining
+# Data-Driven-Text-Mining
