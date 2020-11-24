@@ -1,7 +1,7 @@
 import os
 import numpy as np
 import pandas as pd
-import tqdm
+import tqdm.notebook as tqdm
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -125,7 +125,8 @@ def train_bert(train_loader, val_loader, device, num_epoch=20, LR_Bert=1e-5, LR_
         if val_f1 > best_f1:
             model.eval()
             model.save_pretrained(os.path.join(model_path, 'best_bert_finetuned_model'))
-            torch.save(CentLoss.state_dict(), os.path.join(model_path, 'best_center_model'))
+            if alpha_CL > 0:
+                torch.save(CentLoss.state_dict(), os.path.join(model_path, 'best_center_model'))
             print ('Best epoch so far: {}'.format(epoch))
             best_f1 = val_f1
         print ('For epoch {}: val acc {} | val f1 {}'.format(epoch, val_acc, val_f1))

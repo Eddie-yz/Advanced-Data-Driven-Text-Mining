@@ -1,6 +1,6 @@
 import os
 import numpy as np
-import tqdm
+import tqdm.notebook as tqdm
 import torch
 import torch.nn as nn
 import torch.optim as optim
